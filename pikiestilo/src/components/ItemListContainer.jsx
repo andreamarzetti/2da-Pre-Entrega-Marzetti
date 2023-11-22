@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
-
-import { ItemList } from "./itemList";
+import { ItemList } from "./ItemList"; // Ajuste en la importación
 import { products } from "../data/products";
 
 export const ItemListContainer = () => {
@@ -22,9 +21,9 @@ export const ItemListContainer = () => {
     promise
       .then((response) => {
         if (id) {
-          const filteres = response.filter((item) => item.category === id);
+          const filtered = response.filter((item) => item.category === id); // Corrección en la variable
 
-          setItems(filteres);
+          setItems(filtered);
         } else {
           setItems(response);
         }
@@ -32,9 +31,10 @@ export const ItemListContainer = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-
-  return <Container className="mt-4">
-    <h1>Lista </h1>
-    <ItemList items={items} />
-  </Container>;
-}
+  return (
+    <Container className="mt-4">
+      <h1>Lista </h1>
+      <ItemList items={items} />
+    </Container>
+  );
+};
