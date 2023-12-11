@@ -7,13 +7,6 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import { CartWidget } from "./CartWidget";
 
-import { products } from '../data/products';
-
-const categories = products.map((item) => item.category);
-const uniqueCategories = new Set(categories);
-
-console.log([...uniqueCategories]);
-
 
 export const NavBar = () => {
   return (
@@ -23,10 +16,15 @@ export const NavBar = () => {
           <Navbar.Brand >Piki Estilo</Navbar.Brand>
         </NavLink>
         <Nav className="me-auto">
-          {[...uniqueCategories].map((item) => (
-            <Nav.Link as={NavLink} key={item} to={`/category/${item}`}>
-              {item}
-            </Nav.Link>))}
+        <Nav.Link as={NavLink} to={"/category/Remeras"}>
+          Remeras
+          </Nav.Link>
+          <Nav.Link as={NavLink} to={"/category/Pantalones"}>
+          Pantalones
+          </Nav.Link>
+          <Nav.Link as={NavLink} to={"/category/Camperas"}>
+          Camperas
+          </Nav.Link>
         </Nav>
         <CartWidget />
       </Container>

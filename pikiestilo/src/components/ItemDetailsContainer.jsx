@@ -1,38 +1,45 @@
-import { useState, useEffect } from "react";
+import {useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { getFirestore, getDoc, doc } from "firebase/firestore";
+import Container from "react-bootstrap/Container";
 
-import { products } from "../data/products";
+import { CartContext } from "../contexts/CartContext";
+import { ItemCounter } from "./itemCounter";
 
 export const ItemDetailsContainer = () => {
     const [item, setItem] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const { id } = useParams();
-    console.log(typeof id);
+
+    const {onAdd} = useContext(CartContext);
 
     useEffect(() => {
-        const promise = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(products);
-            }, 2000);
-        });
+        const db = getFirestore();
 
-        promise
-            .then((response) => {
-                const filteres = response.find((item) => item.id == id);
-                setItem(filteres);
-            })
+        const refDoc = doc(db, "items", id );
+
+        getDoc(refDoc).then((snapshot) => {
+            setItem({ id: snapshot.id, ...snapshot.data() });
+        }).finally(() => setLoading(false));
     }, [id]);
 
-    if (!item) {
+    const add = (quantity) => {
+        onAdd(item, quantity);
+    }
+
+    if (loading) {
         return <> Loading </>;
     }
 
 
     return (
-        <div>
+        <Container className="mt-4">
             <h1>{item.title}</h1>
-            <img src={item.pictureUrl} />
+            <img src={item.pictureUrl} width="300" />
             <p>{item.description}</p>
-        </div>
+            <p>Stock: {item.stock}</p>
+            <ItemCounter  initial ={1} stock={item.stock} onAdd={(add)}/> 
+        </Container>
     );
 };

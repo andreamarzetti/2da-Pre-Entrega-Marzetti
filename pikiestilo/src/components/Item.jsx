@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import CardText from "react-bootstrap/esm/CardText";
 
 export const Item = ({ item }) => {
   console.log(item);
